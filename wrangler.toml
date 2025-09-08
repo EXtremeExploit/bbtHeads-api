@@ -1,0 +1,7 @@
+name = "bbtheads-api"
+main = "src/main.ts"
+compatibility_date = "2025-05-05"
+upload_source_maps = true
+
+[observability]
+enabled = true
