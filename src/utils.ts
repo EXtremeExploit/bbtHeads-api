@@ -18,7 +18,8 @@ export function LOG(txt: string) {
 const BBT_APPID = 238460;
 
 export async function requestItems(steamId: string) {
-    const f = await fetch(`https://steamcommunity.com/inventory/${steamId}/${BBT_APPID}/2?l=english`, {
+    const MAX_ITEMS = 2500;
+    const f = await fetch(`https://steamcommunity.com/inventory/${steamId}/${BBT_APPID}/2?l=english&count=${MAX_ITEMS}`, {
         method: 'GET',
         headers: {
             "User-Agent": "meow",
