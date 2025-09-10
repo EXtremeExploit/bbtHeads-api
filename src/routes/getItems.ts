@@ -17,6 +17,7 @@ export default async function (_env: Env, req: Request, match: URLPatternResult)
     if (typeof match.pathname.groups == 'undefined' ||
         typeof match.pathname.groups.steamId == 'undefined' ||
         match.pathname.groups.steamId == null ||
+        match.pathname.groups.steamId.length != 17 ||
         match.pathname.groups.steamId == "" ||
         match.pathname.groups.steamId == "0") {
         return Response.json('invalid steamId type', {
