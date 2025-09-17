@@ -15,17 +15,9 @@ export function LOG(txt: string) {
     console.log(`${GetLogDate()} | ${txt}`);
 }
 
-const BBT_APPID = 238460;
+export function isSteamIdValid(id: string | null | undefined): boolean {
+    if (!id) return false;
+    if (id.length != 17) return false;
 
-export async function requestItems(steamId: string) {
-    const MAX_ITEMS = 2500;
-    const f = await fetch(`https://steamcommunity.com/inventory/${steamId}/${BBT_APPID}/2?l=english&count=${MAX_ITEMS}`, {
-        method: 'GET',
-        headers: {
-            "User-Agent": "meow",
-            "Content-Type": "application/json",
-        }
-    });
-    const items = await f.json();
-    return items;
+    return (/^\d{17}$/).test(id);
 }

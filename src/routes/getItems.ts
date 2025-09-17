@@ -1,7 +1,5 @@
 import { Env } from '../types';
-import { requestItems } from '../utils';
-
-
+import { isSteamIdValid } from '../utils';
 
 export default async function (_env: Env, req: Request, match: URLPatternResult) {
     if (req.method != 'GET') {
@@ -14,12 +12,7 @@ export default async function (_env: Env, req: Request, match: URLPatternResult)
         });
     }
 
-    if (typeof match.pathname.groups == 'undefined' ||
-        typeof match.pathname.groups.steamId == 'undefined' ||
-        match.pathname.groups.steamId == null ||
-        match.pathname.groups.steamId.length != 17 ||
-        match.pathname.groups.steamId == "" ||
-        match.pathname.groups.steamId == "0") {
+    if (!isSteamIdValid(match.pathname.groups.steamId)) {
         return Response.json('invalid steamId type', {
             status: 400,
             headers: {
@@ -30,9 +23,18 @@ export default async function (_env: Env, req: Request, match: URLPatternResult)
     }
 
 
-    const steamId = BigInt(match.pathname.groups.steamId).toString();
+    const steamId = match.pathname.groups.steamId;
 
-    const items = await requestItems(steamId);
+    const MAX_ITEMS = 2500;
+    const BBT_APPID = 238460;
+    const f = await fetch(`https://steamcommunity.com/inventory/${steamId}/${BBT_APPID}/2?l=english&count=${MAX_ITEMS}`, {
+        method: 'GET',
+        headers: {
+            "User-Agent": "meow",
+            "Content-Type": "application/json",
+        }
+    });
+    const items = await f.json();
 
     return Response.json(items, {
         status: 200,
