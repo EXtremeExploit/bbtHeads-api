@@ -34,10 +34,21 @@ export default async function (_env: Env, req: Request, match: URLPatternResult)
             "Content-Type": "application/json",
         }
     });
+
+    if (f.status == 429) {
+        return Response.json('Rate limited by steam. Try again later', {
+            status: 429,
+            headers: {
+                'content-type': 'application/json; charset=utf-8',
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
+    }
+
     const items = await f.json();
 
     return Response.json(items, {
-        status: 200,
+        status: f.status,
         headers: {
             'content-type': 'application/json; charset=utf-8',
             'Access-Control-Allow-Origin': '*'
