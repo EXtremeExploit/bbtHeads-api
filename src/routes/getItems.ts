@@ -30,7 +30,7 @@ export default async function (_env: Env, req: Request, match: URLPatternResult)
     const f = await fetch(`https://steamcommunity.com/inventory/${steamId}/${BBT_APPID}/2?l=english&count=${MAX_ITEMS}`, {
         method: 'GET',
         headers: {
-            "User-Agent": "meow",
+            "User-Agent": "BBTHeads API",
             "Content-Type": "application/json",
         }
     });
